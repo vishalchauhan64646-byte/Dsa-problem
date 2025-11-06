@@ -1,0 +1,224 @@
+// Steps to Implement (Bubble Sort)
+// 1. Start with an unsorted array.
+// 2. Compare each adjacent pair of elements.
+// 3. If the first element is greater than the second, swap them.
+// 4. Continue this for all elements — the largest element will "bubble up"
+// to the end.
+// 5. Repeat the process for the remaining unsorted part of the array.
+// 6. Stop when no swaps are required (array is sorted).
+
+#include<iostream>
+using namespace std;
+
+void bubbleSort(int arr[],int n){
+
+    for(int i=0;i<n-1;i++){
+        bool isSwap=false;
+
+        for(int j=0;j<n-i-1;j++){
+            if(arr[j]>arr[j+1]){
+                swap(arr[j],arr[j+1]);
+                isSwap=true;
+            }
+        } 
+        if(!isSwap){
+            return;
+        }
+    }
+}
+void printArr(int arr[], int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    } 
+    cout<<endl;
+}
+int main(){
+    int n=5;
+    int arr[]={1,2,3,4,5};
+    
+    bubbleSort(arr,n);
+    printArr(arr,n);
+    
+    return 0;
+}
+
+
+// Steps to Implement (Selection Sort)
+// 1. Start with the first element — assume it is the smallest.
+// 2. Compare it with every other element in the unsorted part.
+// 3. Find the minimum element and swap it with the first element.
+// 4. Move the boundary of the sorted part one step forward.
+// 5. Repeat the process for the remaining unsorted elements until the
+// whole array is sorted.
+
+#include<iostream>
+using namespace std;
+
+void selectionSort(int arr[], int n){
+    for(int i=0;i<n-1;i++){
+        int smallestIdx=i;
+        for(int j=i+1;j<n;j++){
+            if(arr[j]<arr[smallestIdx]){
+                smallestIdx=j;
+            }
+            
+        }
+        swap(arr[i],arr[smallestIdx]);
+    }
+}
+void printArr(int arr[], int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    } 
+    cout<<endl;
+}
+
+
+int main(){
+    int n=5;
+    int arr[]={4,1,5,2,3};
+
+    selectionSort(arr,n);
+    printArr(arr,n);
+}
+
+// Steps to Implement (Insertion Sort)
+// 1. Start with the second element (first is assumed sorted).
+// 2. Compare it with elements before it.
+// 3. Insert it in the correct position among the previously sorted elements.
+// 4. Move to the next element and repeat.
+// 5. Continue until all elements are in sorted order.
+
+#include<iostream>
+using namespace std;
+
+void insertionSort(int arr[],int n){
+    for(int i=1;i<n;i++){
+        int curr=arr[i];
+        int prev=i-1;
+
+        while(prev>=0 && arr[prev]>curr){
+            arr[prev+1]=arr[prev];
+            prev--;
+        }
+         arr[prev+1]=curr;
+    }
+}
+void printArr(int arr[], int n){
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    } 
+    cout<<endl;
+}
+ int main(){
+
+    int n=5;
+    int arr[]={4,1,5,2,3};
+
+    insertionSort(arr,n);
+    printArr(arr,n);
+    return 0;
+ }
+
+
+
+
+
+// Steps to Implement (Quick Sort)
+// 1. Choose a pivot element from the array.
+// 2. Partition the array such that elements smaller than the pivot are on
+// the left, and larger ones on the right.
+// 3. Recursively apply the same process on the left and right subarrays.
+// 4. Combine the results — the array becomes sorted once all subarrays
+// are processed.
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int partition(vector<int> &arr,int st,int end){
+    int idx = st-1,pivot=arr[end];
+
+    for(int j=st;j<end;j++){
+        if(arr[j]<=pivot){
+            idx++;
+            swap(arr[j],arr[idx]);
+
+        }
+    }
+    idx++;
+    swap(arr[end],arr[idx]);
+    return idx;
+}
+void quicksort(vector<int>&arr,int st,int end){
+    if(st<end){
+        int pivIdx = partition(arr,st,end);
+
+        quicksort(arr,st,pivIdx-1);//left heft
+        quicksort(arr,pivIdx+1,end);//right heft
+    }
+}
+int main(){
+    vector<int>arr={5,2,6,4,1,3};
+    quicksort(arr,0,arr.size()-1);
+
+    for(int val:arr){
+        cout<<val<<" ";
+    }
+    cout<<endl;
+}
+
+// Steps to Implement (Merge Sort)
+// 1. Divide the array into two halves until each part has a single
+// element.
+// 2. Recursively sort the left and right halves.
+// 3. Merge the two sorted halves into one sorted array.
+// 4. Continue merging until the entire array is sorted.
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+void merge(vector<int>&arr,int st,int mid,int end){
+    vector<int>temp;
+    int i=st,j=mid+1;
+    while(i<=mid&&j<=end){
+        if(arr[i]<=arr[j]){
+            temp.push_back(arr[i]);
+            i++;
+        }else{
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+    while(i<=mid){
+        temp.push_back(arr[i]);
+        i++;
+    }
+    while(j<=end){
+        temp.push_back(arr[j]);
+        j++;
+    }
+    for(int idx=0; idx<temp.size();idx++){
+        arr[st+idx]=temp[idx];
+    }
+   
+}
+
+void mergeSort(vector<int>&arr,int st,int end){
+    if(st<end){
+        int mid = st+(end-st)/2;
+
+        mergeSort(arr,st,mid);
+        mergeSort(arr,mid+1,end);
+    }
+}
+int main(){
+    vector<int>arr ={12,31,35,8,32,17};
+    mergeSort(arr,0,arr.size()-1);
+
+    for(int val:arr){
+        cout<<val<<" ";
+    }
+    cout<<endl;
+}
